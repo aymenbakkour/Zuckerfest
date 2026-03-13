@@ -42,11 +42,11 @@ const AdBanner = () => {
 };
 
 const TEMPLATES = [
-  "بنسيم الرحمة وعبير المغفرة، أزف إليكم أصدق التهاني وأطيب الأماني بمناسبة حلول عيد الفطر المبارك. أسأل الله العلي القدير أن يتقبل منا ومنكم الصيام والقيام وصالح الأعمال، وأن يعيده علينا وعليكم باليمن والخير والبركات، وأن يديم عليكم لباس الصحة والعافية. 🌙✨\n\nكل عام وأنتم بخير،\nأخوكم: {name}",
+  "بنسيم الرحمة وعبير المغفرة، أزف إليكم أصدق التهاني وأطيب الأماني بمناسبة حلول عيد الفطر المبارك. أسأل الله العلي القدير أن يتقبل منا ومنكم الصيام والقيام وصالح الأعمال، وأن يعيده علينا وعليكم باليمن والخير والبركات، وأن يديم عليكم لباس الصحة والعافية. 🌙✨\n\nكل عام وأنتم بخير،\nالمرسل: {name}",
   "تتلاقى الأرواح بالحب والود في هذا اليوم السعيد، ويسعدني أن أبعث لكم باقة من الأمنيات العطرة بمناسبة عيد الفطر المبارك. جعله الله عيد فرح وسرور، وجعل أيامكم كلها أعياداً تتلألأ بالسعادة والرضا. تقبل الله طاعتكم وأتم بالعيد فرحتكم. 🕌🌺\n\nمع أطيب التحيات،\n{name}",
-  "مع إشراقة شمس عيد الفطر المبارك، أرسل لكم نبضات قلب محب تدعو لكم بكل خير. أسأل الله الذي أعاد العيد وطوى الشهر الفقيد أن يمدكم بعمر مديد ويجعل حياتكم كلها عيد في عيد. تقبل الله منا ومنكم صالح الأعمال. 🎉🕊️\n\nمحبكم:\n{name}",
+  "مع إشراقة شمس عيد الفطر المبارك، أرسل لكم نبضات قلب محب تدعو لكم بكل خير. أسأل الله الذي أعاد العيد وطوى الشهر الفقيد أن يمدكم بعمر مديد ويجعل حياتكم كلها عيد في عيد. تقبل الله منا ومنكم صالح الأعمال. 🎉🕊️\n\nمع خالص المودة:\n{name}",
   "تفيض القلوب بهجةً وسروراً بقدوم عيد الفطر السعيد، وبهذه المناسبة الغالية على قلوبنا، أتقدم إليكم بأحر التهاني والتبريكات. راجياً من المولى عز وجل أن يغمر أيامكم بالسعادة، وأن يكلل جهودكم بالنجاح، وأن يجمعنا دائماً على الخير والمحبة. 🌟🌸\n\nالمرسل:\n{name}",
-  "كل عام وأنتم النور الذي يضيء أيامنا، وكل عيد وأنتم الفرح الذي يغمر قلوبنا. بمناسبة عيد الفطر المبارك، أرفع أسمى آيات التهاني والمباركات لكم ولأسرتكم الكريمة، سائلاً الله أن يتقبل طاعاتكم وأن يجعل أيامكم كلها سعادة وهناء. 🌙✨\n\nأخوكم:\n{name}",
+  "كل عام وأنتم النور الذي يضيء أيامنا، وكل عيد وأنتم الفرح الذي يغمر قلوبنا. بمناسبة عيد الفطر المبارك، أرفع أسمى آيات التهاني والمباركات لكم ولأسرتكم الكريمة، سائلاً الله أن يتقبل طاعاتكم وأن يجعل أيامكم كلها سعادة وهناء. 🌙✨\n\nمع أطيب التمنيات:\n{name}",
   "أدام الله بَهجة أعيادكم بقرب مَن تحبون، وكُل عَام وأرواحكم في فَرح. بمناسبة حلول عيد الفطر المبارك، أتقدم إليكم بأصدق التهاني وأطيب الأماني، راجياً من الله أن يعيده عليكم وعلى الأمة الإسلامية بالخير واليُمن والبركات. 🕌✨\n\nمع خالص المودة،\n{name}"
 ];
 
@@ -61,11 +61,13 @@ export default function EidGreetingApp() {
   }, []);
 
   const currentMessage = TEMPLATES[selectedTemplate].replace('{name}', name.trim() || '[اسمك هنا]');
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(currentMessage)}`;
+  const appLinkText = "✨ اصنع تهنئتك الخاصة من هنا:\nhttps://zuckerfest.netlify.app/";
+  const fullMessage = `${currentMessage}\n\n${appLinkText}`;
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(currentMessage);
+      await navigator.clipboard.writeText(fullMessage);
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
@@ -160,10 +162,15 @@ export default function EidGreetingApp() {
                 <span>تغيير الصيغة</span>
               </button>
             </div>
-            <div className="relative bg-emerald-950/50 border border-emerald-800/50 rounded-2xl p-5 min-h-[160px] flex items-center justify-center text-center">
+            <div className="relative bg-emerald-950/50 border border-emerald-800/50 rounded-2xl p-5 min-h-[160px] flex flex-col items-center justify-center text-center">
               <p className="text-emerald-50 leading-relaxed whitespace-pre-wrap font-medium text-lg">
                 {currentMessage}
               </p>
+              <div className="mt-4 pt-4 border-t border-emerald-800/50 w-full">
+                <p className="text-emerald-400/80 text-sm whitespace-pre-wrap" dir="rtl">
+                  {appLinkText}
+                </p>
+              </div>
             </div>
           </div>
 
